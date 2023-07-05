@@ -31,7 +31,7 @@ pub struct Args {
     pub config: Option<Vec<PathBuf>>,
     /// Generates the config directory
     ///
-    /// This also replaces the default patch files
+    /// This also resets the default patch files
     /// TODO: link to patches directory on github
     ///
     /// This uses `dirs::config_dir` under the hood
