@@ -38,4 +38,7 @@ pub struct Args {
     /// https://docs.rs/dirs/latest/dirs/fn.config_dir.html#
     #[arg(long, verbatim_doc_comment)]
     pub generate_config: bool,
+    /// Simply prints the location of the config path
+    #[arg(long, verbatim_doc_comment)]
+    pub get_config_path: bool,
 }
