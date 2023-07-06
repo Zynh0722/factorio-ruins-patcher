@@ -1,14 +1,14 @@
 use std::io::BufReader;
 
 mod args;
-mod generate_config;
+mod config;
 mod patch;
 
 use clap::Parser;
 
 use crate::{
     args::Args,
-    generate_config::{generate_config_dir, get_config_path},
+    config::{generate_config_dir, get_config_path},
     patch::PatchFile,
 };
 
