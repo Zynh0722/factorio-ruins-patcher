@@ -2,10 +2,24 @@ use std::{io, path::PathBuf};
 
 use std::io::Write;
 
+#[allow(unused)]
+pub fn config_exists() -> bool {
+    get_config_path().is_dir()
+}
+
+#[allow(unused)]
+pub fn patches_exists() -> bool {
+    get_patches_path().is_dir()
+}
+
 pub fn get_config_path() -> PathBuf {
     dirs::config_dir()
         .expect("Unsupported Platform")
         .join("factorio-ruins-patcher")
+}
+
+pub fn get_patches_path() -> PathBuf {
+    get_config_path().join("patches")
 }
 
 pub fn generate_config_dir() -> io::Result<()> {
