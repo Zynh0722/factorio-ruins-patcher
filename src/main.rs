@@ -31,5 +31,5 @@ fn main() {
 
     let patches: Vec<PatchFile> = fetch_patches();
 
-    patches.iter().for_each(|patch| println!("{patch:?}"));
+    patches.iter().for_each(|patch| println!("{patch:#?}"));
 }
