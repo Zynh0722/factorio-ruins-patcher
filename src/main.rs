@@ -8,7 +8,6 @@ use patch::fetch_patches;
 use crate::{
     args::Args,
     config::{generate_config_dir, get_config_path},
-    patch::PatchFile,
 };
 
 include!(concat!(env!("OUT_DIR"), "/default_patches.rs"));
@@ -29,7 +28,7 @@ fn main() {
         return;
     }
 
-    let patches: Vec<PatchFile> = fetch_patches();
+    let (patches, _config_type) = fetch_patches();
 
     patches.iter().for_each(|patch| println!("{patch:#?}"));
 }

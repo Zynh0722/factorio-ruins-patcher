@@ -38,18 +38,29 @@ fn default_enabled() -> bool {
     true
 }
 
-pub fn fetch_patches() -> Vec<PatchFile> {
+pub enum ConfigType {
+    Default,
+    Config,
+}
+
+pub fn fetch_patches() -> (Vec<PatchFile>, ConfigType) {
     if patches_exists() {
-        std::fs::read_dir(get_patches_path())
-            .unwrap()
-            .flat_map(|dir_entry| dir_entry.map(|e| e.path()))
-            .flat_map(|path| File::open(path))
-            .map(|handle| serde_json::from_reader(handle).unwrap())
-            .collect()
+        (
+            std::fs::read_dir(get_patches_path())
+                .unwrap()
+                .flat_map(|dir_entry| dir_entry.map(|e| e.path()))
+                .flat_map(|path| File::open(path))
+                .map(|handle| serde_json::from_reader(handle).unwrap())
+                .collect(),
+            ConfigType::Config,
+        )
     } else {
-        PATCHES
-            .values()
-            .flat_map(|str| serde_json::from_str(*str))
-            .collect()
+        (
+            PATCHES
+                .values()
+                .flat_map(|str| serde_json::from_str(*str))
+                .collect(),
+            ConfigType::Default,
+        )
     }
 }
