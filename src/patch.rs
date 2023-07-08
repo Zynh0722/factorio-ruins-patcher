@@ -21,17 +21,17 @@ pub enum Action {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Patch {
     /// A regex pattern used for locating a patch location, and capturing information
-    pattern: String,
-    action: Action,
+    pub pattern: String,
+    pub action: Action,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct PatchFile {
     #[serde(default)]
-    priority: i32,
+    pub priority: i32,
     #[serde(default = "default_enabled")]
-    enabled: bool,
-    patches: Vec<Patch>,
+    pub enabled: bool,
+    pub patches: Vec<Patch>,
 }
 
 fn default_enabled() -> bool {
