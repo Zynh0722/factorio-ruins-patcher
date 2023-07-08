@@ -37,6 +37,7 @@ fn main() {
             println!("{patch:?}");
         }
     } else {
+        println!("Using default patches");
         for patch in PATCHES.values() {
             let patch: PatchFile = serde_json::from_str(patch).unwrap();
             println!("{patch:?}");
