@@ -1,0 +1,12 @@
+{
+  "priority": 1,
+  "enabled": false,
+  "patches": [
+    {
+      "pattern": "\"(.+-electric-pole(?:-remnants)?)\"",
+      "action": {
+        "type": "delete"
+      }
+    }
+  ]
+}
