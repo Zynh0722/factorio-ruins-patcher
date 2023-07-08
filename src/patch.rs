@@ -22,5 +22,11 @@ pub struct Patch {
 pub struct PatchFile {
     #[serde(default)]
     priority: i32,
+    #[serde(default = "default_enabled")]
+    enabled: bool,
     patches: Vec<Patch>,
+}
+
+fn default_enabled() -> bool {
+    true
 }
