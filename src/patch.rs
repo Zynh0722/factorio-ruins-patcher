@@ -1,4 +1,11 @@
+use std::fs::File;
+
 use serde::{Deserialize, Serialize};
+
+use crate::{
+    config::{get_patches_path, patches_exists},
+    PATCHES,
+};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "snake_case")]
@@ -29,4 +36,20 @@ pub struct PatchFile {
 
 fn default_enabled() -> bool {
     true
+}
+
+pub fn fetch_patches() -> Vec<PatchFile> {
+    if patches_exists() {
+        std::fs::read_dir(get_patches_path())
+            .unwrap()
+            .flat_map(|dir_entry| dir_entry.map(|e| e.path()))
+            .flat_map(|path| File::open(path))
+            .map(|handle| serde_json::from_reader(handle).unwrap())
+            .collect()
+    } else {
+        PATCHES
+            .values()
+            .flat_map(|str| serde_json::from_str(*str))
+            .collect()
+    }
 }

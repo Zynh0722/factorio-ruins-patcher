@@ -1,14 +1,13 @@
-use std::fs::File;
-
 mod args;
 mod config;
 mod patch;
 
 use clap::Parser;
+use patch::fetch_patches;
 
 use crate::{
     args::Args,
-    config::{generate_config_dir, get_config_path, get_patches_path, patches_exists},
+    config::{generate_config_dir, get_config_path},
     patch::PatchFile,
 };
 
@@ -30,17 +29,7 @@ fn main() {
         return;
     }
 
-    if patches_exists() {
-        for patch in std::fs::read_dir(get_patches_path()).unwrap() {
-            let patch: PatchFile =
-                serde_json::from_reader(File::open(patch.unwrap().path()).unwrap()).unwrap();
-            println!("{patch:?}");
-        }
-    } else {
-        println!("Using default patches");
-        for patch in PATCHES.values() {
-            let patch: PatchFile = serde_json::from_str(patch).unwrap();
-            println!("{patch:?}");
-        }
-    }
+    let patches: Vec<PatchFile> = fetch_patches();
+
+    patches.iter().for_each(|patch| println!("{patch:?}"));
 }
