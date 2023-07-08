@@ -1,4 +1,4 @@
-use std::io::BufReader;
+use std::fs::File;
 
 mod args;
 mod config;
@@ -8,7 +8,7 @@ use clap::Parser;
 
 use crate::{
     args::Args,
-    config::{generate_config_dir, get_config_path},
+    config::{generate_config_dir, get_config_path, get_patches_path, patches_exists},
     patch::PatchFile,
 };
 
@@ -30,11 +30,16 @@ fn main() {
         return;
     }
 
-    let file = std::fs::File::open("./patches/convert_poles.json").unwrap();
-    let buf_file = BufReader::new(file);
-
-    let patch_file: PatchFile = serde_json::from_reader(buf_file).unwrap();
-
-    println!("{args:?}");
-    println!("{patch_file:?}");
+    if patches_exists() {
+        for patch in std::fs::read_dir(get_patches_path()).unwrap() {
+            let patch: PatchFile =
+                serde_json::from_reader(File::open(patch.unwrap().path()).unwrap()).unwrap();
+            println!("{patch:?}");
+        }
+    } else {
+        for patch in PATCHES.values() {
+            let patch: PatchFile = serde_json::from_str(patch).unwrap();
+            println!("{patch:?}");
+        }
+    }
 }
