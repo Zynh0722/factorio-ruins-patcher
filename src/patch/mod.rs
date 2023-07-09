@@ -4,6 +4,7 @@ use crate::config::{get_patches_path, patches_exists};
 
 mod parser;
 
+use itertools::Itertools;
 pub use parser::*;
 
 include!(concat!(env!("OUT_DIR"), "/default_patches.rs"));
@@ -13,7 +14,7 @@ pub enum ConfigType {
     Config,
 }
 
-pub fn fetch_patches() -> (Vec<PatchFile>, ConfigType) {
+pub fn fetch_patch_files() -> (Vec<PatchFile>, ConfigType) {
     if patches_exists() {
         (
             std::fs::read_dir(get_patches_path())
@@ -33,4 +34,19 @@ pub fn fetch_patches() -> (Vec<PatchFile>, ConfigType) {
             ConfigType::Default,
         )
     }
+}
+
+pub fn fetch_enabled_patches() -> (Vec<Patch>, ConfigType) {
+    let (patch_files, config_type) = fetch_patch_files();
+
+    (
+        patch_files
+            .into_iter()
+            .filter(|patch| patch.enabled)
+            .sorted_unstable()
+            .rev()
+            .flat_map(|file| file.patches)
+            .collect_vec(),
+        config_type,
+    )
 }

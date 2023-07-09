@@ -3,8 +3,8 @@ mod config;
 mod patch;
 
 use clap::Parser;
-use itertools::Itertools;
-use patch::{fetch_patches, PatchFile};
+
+use patch::fetch_enabled_patches;
 
 use crate::{
     args::Args,
@@ -27,14 +27,7 @@ fn main() {
         return;
     }
 
-    let (patches, _config_type) = fetch_patches();
-
-    let patches: Vec<PatchFile> = patches
-        .into_iter()
-        .filter(|patch| patch.enabled)
-        .sorted()
-        .rev()
-        .collect();
+    let (patches, _config_type) = fetch_enabled_patches();
 
     patches.iter().for_each(|patch| println!("{patch:#?}"));
 }
