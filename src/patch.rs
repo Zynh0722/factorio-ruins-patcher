@@ -34,6 +34,25 @@ pub struct PatchFile {
     pub patches: Vec<Patch>,
 }
 
+impl Ord for PatchFile {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        self.priority.cmp(&other.priority)
+    }
+}
+
+impl PartialOrd for PatchFile {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+impl Eq for PatchFile {}
+impl PartialEq for PatchFile {
+    fn eq(&self, other: &Self) -> bool {
+        self.priority == other.priority
+    }
+}
+
 fn default_enabled() -> bool {
     true
 }

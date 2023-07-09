@@ -34,6 +34,9 @@ pub struct Args {
     /// This also resets the default patch files
     /// TODO: link to patches directory on github
     ///
+    /// note: This serializes the generated files on the fly
+    /// so formatting may not be identical
+    ///
     /// This uses `dirs::config_dir` under the hood
     /// https://docs.rs/dirs/latest/dirs/fn.config_dir.html#
     #[arg(long, verbatim_doc_comment)]
