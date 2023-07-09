@@ -25,7 +25,7 @@ pub fn generate_config_dir() -> io::Result<()> {
 
     std::fs::create_dir_all(&patches_path)?;
 
-    for (key, value) in crate::PATCHES.entries() {
+    for (key, value) in crate::patch::PATCHES.entries() {
         let file_path = patches_path.join(key.to_string() + ".json");
         let parsed_json: serde_json::Value = serde_json::from_str(value).unwrap();
 

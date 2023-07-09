@@ -11,8 +11,6 @@ use crate::{
     config::{generate_config_dir, get_config_path},
 };
 
-include!(concat!(env!("OUT_DIR"), "/default_patches.rs"));
-
 fn main() {
     let mut args = Args::parse();
     if args.dry_run {

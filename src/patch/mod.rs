@@ -1,13 +1,12 @@
 use std::fs::File;
 
-use crate::{
-    config::{get_patches_path, patches_exists},
-    PATCHES,
-};
+use crate::config::{get_patches_path, patches_exists};
 
 mod parser;
 
 pub use parser::*;
+
+include!(concat!(env!("OUT_DIR"), "/default_patches.rs"));
 
 pub enum ConfigType {
     Default,
