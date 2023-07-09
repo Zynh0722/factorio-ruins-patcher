@@ -7,6 +7,8 @@ use crate::{
     PATCHES,
 };
 
+mod parser;
+
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "snake_case")]
 #[serde(tag = "type")]
