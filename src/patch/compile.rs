@@ -14,12 +14,9 @@ pub fn replace_function(match_pattern: Regex, replace_pattern: Regex) -> Box<Com
     })
 }
 
-pub fn delete_function(match_pattern: Regex) -> Box<CompiledPatch> {
-    Box::new(move |str| {
-        println!("{:?}", match_pattern.captures(&str));
-
-        str.to_owned()
-    })
+// TODO: Make this actually do stuff lmao
+pub fn delete_function(_match_pattern: Regex) -> Box<CompiledPatch> {
+    Box::new(move |str| str.to_owned())
 }
 
 pub fn compile_patches(patches: Vec<Box<CompiledPatch>>) -> Box<CompiledPatch> {
