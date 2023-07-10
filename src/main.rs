@@ -1,6 +1,7 @@
 mod args;
 mod config;
 mod patch;
+mod util;
 
 use clap::Parser;
 
@@ -10,6 +11,7 @@ use regex::Regex;
 use crate::{
     args::Args,
     config::{generate_config_dir, get_config_path},
+    util::recursive_file_list,
 };
 
 fn main() {
@@ -51,7 +53,7 @@ fn main() {
     }
     // Safety: Look above...
     let target = unsafe { target.unwrap_unchecked() };
-    println!("{target:?}");
+    let _target_files = recursive_file_list(&target);
 
     patches.iter().for_each(|patch| println!("{patch:#?}"));
 }
