@@ -4,7 +4,8 @@ mod patch;
 
 use clap::Parser;
 
-use patch::fetch_enabled_patches;
+use patch::{fetch_enabled_patches, Action};
+use regex::Regex;
 
 use crate::{
     args::Args,
@@ -28,6 +29,20 @@ fn main() {
     }
 
     let (patches, _config_type) = fetch_enabled_patches();
+
+    let patches: Vec<(Regex, Option<Regex>)> = patches
+        .into_iter()
+        .map(|patch| {
+            (
+                Regex::new(&patch.pattern).unwrap(),
+                if let Action::Replace { pattern } = patch.action {
+                    Some(Regex::new(&pattern).unwrap())
+                } else {
+                    None
+                },
+            )
+        })
+        .collect();
 
     patches.iter().for_each(|patch| println!("{patch:#?}"));
 }
