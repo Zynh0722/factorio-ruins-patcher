@@ -44,5 +44,14 @@ fn main() {
         })
         .collect();
 
+    let target = args.target.or_else(|| std::env::current_dir().ok());
+    if !target.is_some() {
+        println!("Unable to access target directory");
+        return;
+    }
+    // Safety: Look above...
+    let target = unsafe { target.unwrap_unchecked() };
+    println!("{target:?}");
+
     patches.iter().for_each(|patch| println!("{patch:#?}"));
 }
