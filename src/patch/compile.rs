@@ -4,11 +4,13 @@ use super::{fetch_enabled_patches, Action, ConfigType, Patch};
 
 type CompiledPatch = dyn Fn(&str) -> String;
 
-pub fn replace_function(match_pattern: Regex, _replace_pattern: Regex) -> Box<CompiledPatch> {
+pub fn replace_function(match_pattern: Regex, replace_pattern: Regex) -> Box<CompiledPatch> {
     Box::new(move |str| {
-        println!("{:?}", match_pattern.captures(&str));
+        let str = str.to_owned();
 
-        str.to_owned()
+        let out = match_pattern.replace_all(&str, replace_pattern.as_str());
+
+        out.to_string()
     })
 }
 

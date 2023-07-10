@@ -3,6 +3,8 @@ mod config;
 mod patch;
 mod util;
 
+use std::{fs::File, io::Read};
+
 use clap::Parser;
 
 use crate::{
@@ -28,7 +30,7 @@ fn main() {
         return;
     }
 
-    let (_patch, _config_type) = fetch_compiled_patches();
+    let (patch, _config_type) = fetch_compiled_patches();
 
     let target = args.target.or_else(|| std::env::current_dir().ok());
     if !target.is_some() {
@@ -39,5 +41,12 @@ fn main() {
     let target = unsafe { target.unwrap_unchecked() };
     let target_files = recursive_file_list(&target);
 
-    println!("Files to be patched: {}", target_files.len())
+    println!("Files to be patched: {}", target_files.len());
+
+    for path in target_files {
+        let mut buf = String::new();
+        File::open(&path).unwrap().read_to_string(&mut buf).unwrap();
+
+        patch(&buf);
+    }
 }
