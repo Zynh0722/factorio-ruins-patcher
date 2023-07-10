@@ -5,12 +5,10 @@ mod util;
 
 use clap::Parser;
 
-use patch::{fetch_enabled_patches, Action};
-use regex::Regex;
-
 use crate::{
     args::Args,
     config::{generate_config_dir, get_config_path},
+    patch::fetch_compiled_patches,
     util::recursive_file_list,
 };
 
@@ -30,21 +28,7 @@ fn main() {
         return;
     }
 
-    let (patches, _config_type) = fetch_enabled_patches();
-
-    let patches: Vec<(Regex, Option<Regex>)> = patches
-        .into_iter()
-        .map(|patch| {
-            (
-                Regex::new(&patch.pattern).unwrap(),
-                if let Action::Replace { pattern } = patch.action {
-                    Some(Regex::new(&pattern).unwrap())
-                } else {
-                    None
-                },
-            )
-        })
-        .collect();
+    let (_patch, _config_type) = fetch_compiled_patches();
 
     let target = args.target.or_else(|| std::env::current_dir().ok());
     if !target.is_some() {
@@ -53,7 +37,7 @@ fn main() {
     }
     // Safety: Look above...
     let target = unsafe { target.unwrap_unchecked() };
-    let _target_files = recursive_file_list(&target);
+    let target_files = recursive_file_list(&target);
 
-    patches.iter().for_each(|patch| println!("{patch:#?}"));
+    println!("Files to be patched: {}", target_files.len())
 }

@@ -2,8 +2,10 @@ use std::fs::File;
 
 use crate::config::{get_patches_path, patches_exists};
 
+mod compile;
 mod parser;
 
+pub use compile::*;
 use itertools::Itertools;
 pub use parser::*;
 
