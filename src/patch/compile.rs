@@ -24,10 +24,13 @@ pub fn delete_function(match_pattern: Regex) -> Box<CompiledPatch> {
 
 pub fn compile_patches(patches: Vec<Box<CompiledPatch>>) -> Box<CompiledPatch> {
     Box::new(move |str| {
+        let mut out = str.to_string();
+
         patches.iter().for_each(|patch| {
-            patch(&str);
+            out = patch(&out);
         });
-        str.to_owned()
+
+        out
     })
 }
 
