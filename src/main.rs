@@ -4,7 +4,10 @@ mod patch;
 mod util;
 
 use core::fmt;
-use std::{fs::File, io::Read};
+use std::{
+    fs::{self, File, OpenOptions},
+    io::{Read, Write},
+};
 
 use clap::Parser;
 use console::{style, Style};
@@ -67,6 +70,10 @@ fn main() {
                 69 /* nice */
             );
             print_diff(&buf, &out);
+        }
+
+        if !args.dry_run && out != buf {
+            fs::write(path, out).unwrap();
         }
     }
 }
