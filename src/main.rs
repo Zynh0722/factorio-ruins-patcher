@@ -5,8 +5,8 @@ mod util;
 
 use core::fmt;
 use std::{
-    fs::{self, File, OpenOptions},
-    io::{Read, Write},
+    fs::{self, File},
+    io::Read,
 };
 
 use clap::Parser;
