@@ -12,6 +12,8 @@ fn main() {
         .open(dest_path)
         .unwrap();
 
+    // TODO: I belive I need to use CARGO_MANIFEST_DIR here instead of just the root `patches`
+    // This is due to the potential use of this application as a lib.
     let patches_dir = fs::read_dir("patches").unwrap();
 
     writeln!(patches_file, "use phf::phf_map;").unwrap();
